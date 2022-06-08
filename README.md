@@ -6,13 +6,8 @@ Application for exporting Fortnite models to blender (in less than a second)!
 
 ## Download
 
-[TModel](https://github.com/Tinfoilhat88/TModel/releases/download/temp-commander/TModel.exe)
+[TModel](https://github.com/Tinfoilhat88/TModel/releases/download/temp-impove/TModel.exe)
 
-[Addon - With IK](https://github.com/Tinfoilhat88/TModel/releases/download/temp-1/TModelAddon.py)
+[Addon - With IK](https://github.com/Tinfoilhat88/TModel/releases/download/temp-impove/TModelAddon.py)
 <br>
-[Addon - No IK](https://github.com/Tinfoilhat88/TModel/releases/download/temp-1/TModelAddon_NoIK.py)
-
-If the mappings fail to download: [Download mappings (version 20.40)](https://github.com/Tinfoilhat88/TModel/releases/download/temp-season3/BenbotMappings.usmap) and put it in your: **...\AppData\Roaming\TModel** folder with out changing the name
-<br>
-This should replace the existing one if you have used TModel before.
-
+[Addon - No IK](https://github.com/Tinfoilhat88/TModel/releases/download/temp-impove/TModelAddon_NoIK.py)
