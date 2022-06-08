@@ -121,8 +121,13 @@ namespace TModel
             Module_Right.AddModule(new ItemPreviewModule());
 
 
-            modulePanel.AddModule(Module_Left);
-            modulePanel.AddModule(Module_Right);
+            modulePanel.AddModule(Module_Left, 0.56);
+            modulePanel.AddModule(Module_Right, 0.44);
+
+            if (string.IsNullOrWhiteSpace(Preferences.GameDirectory))
+            {
+                ShowModule<SettingsModule>();
+            }
 
             modulePanel.MakeSeperator(Module_Right, new ModuleContainer(new LoggerModule(), false), new GridLength(150, GridUnitType.Pixel));
 

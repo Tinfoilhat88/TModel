@@ -36,7 +36,7 @@ namespace TModel.MainFrame.Modules
         {
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
-            RenderTransform = new ScaleTransform(1.8,1.8),
+            RenderTransform = new ScaleTransform(1.8,1.8)
         };
 
         CButton UpdateData = new CButton("Update")
@@ -45,8 +45,63 @@ namespace TModel.MainFrame.Modules
             VerticalAlignment = VerticalAlignment.Center,
         };
 
+        private TextBlock UnsavedPreferenceText = new TextBlock()
+        {
+            Visibility = Visibility.Hidden,
+            FontSize = 20,
+            Foreground = HexBrush("#ff5c5c"),
+            Text = "Unsaved preferences!"
+        };
+
+        private TextBlock DirectoryErrorText = new TextBlock()
+        {
+            Visibility = Visibility.Hidden,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            FontSize = 15,
+            Foreground = HexBrush("#ff5c5c"),
+            Text = DirectoryDoesNotExist,
+        };
+
+        const string DirectoryDoesNotExist = "Directory does not exist!";
+        const string NoFortniteFilesInDirectory = "Directory does not contain Fortnite files!";
+
+        private void CheckForUnsaved() 
+        {
+            if (AutoLoadOnStartup.IsChecked != Preferences.AutoLoad || Preferences.GameDirectory != GameDirectoryText.Text)
+            {
+                UnsavedPreferenceText.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                UnsavedPreferenceText.Visibility = Visibility.Hidden;
+            }
+        }
+
         public SettingsModule() : base()
         {
+            GameDirectoryText.TextChanged += (sender, args) =>
+            {
+                if (Directory.Exists(GameDirectoryText.Text))
+                {
+                    if (!Directory.EnumerateFiles(GameDirectoryText.Text, "*.utoc").Any())
+                    {
+                        DirectoryErrorText.Text = NoFortniteFilesInDirectory;
+                        DirectoryErrorText.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        DirectoryErrorText.Visibility = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    DirectoryErrorText.Text = DirectoryDoesNotExist;
+                    DirectoryErrorText.Visibility = Visibility.Visible;
+                }
+                CheckForUnsaved();
+            };
+            AutoLoadOnStartup.Click += (sender, args) => CheckForUnsaved();
+
             SettingsPanel.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             SettingsPanel.ColumnDefinitions.Add(new ColumnDefinition());
             // 
@@ -79,6 +134,7 @@ namespace TModel.MainFrame.Modules
                 Preferences.GameDirectory = GameDirectoryText.Text;
                 Preferences.AutoLoad = AutoLoadOnStartup.IsChecked ?? false;
                 Preferences.Save();
+                UnsavedPreferenceText.Visibility = Visibility.Hidden;
             });
 
             ButtonPanel.Children.Add(SaveButton);
@@ -102,6 +158,9 @@ namespace TModel.MainFrame.Modules
                 GameDirectoryText.Text = string.IsNullOrWhiteSpace(Preferences.GameDirectory) ? null : Preferences.GameDirectory;
                 AutoLoadOnStartup.IsChecked = Preferences.AutoLoad;
             };
+
+            Root.Children.Add(UnsavedPreferenceText);
+            Root.Children.Add(DirectoryErrorText);
 
             Root.Children.Add(SettingsPanel);
             Content = Root;

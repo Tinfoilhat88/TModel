@@ -11,6 +11,14 @@ namespace TModel
 {
     public static class Preferences
     {
+        public enum SettingsVersion : uint
+        {
+            ImplementedSettingsVersion,
+
+            Last,
+            Newest = Last - 1
+        }
+
         public static Action Changed;
 
         // Folder for storing user settings, Fortnite mappings and other data for the software.
@@ -18,21 +26,19 @@ namespace TModel
 
         public static string ExportsPath { get; } = Path.Combine(StorageFolder, "Exports");
 
-        public static string SettingsFile { get; } = Path.Combine(StorageFolder, "Settings.settings");
-
-        public static string MappingsFile { set; get; } = @"https://benbot.app/api/v1/mappings/++Fortnite+Release-19.01-CL-18489740-Windows_oo.usmap";
+        public static string SettingsFile { get; } = Path.Combine(StorageFolder, "TModelSettings.config");
 
         public static string? GameDirectory { get; set; }
 
-        public static bool? AutoLoad { set; get; }
+        public static bool AutoLoad { set; get; }
 
         public static void Save()
         {
             CBinaryWriter Writer = new CBinaryWriter(File.Open(SettingsFile, FileMode.OpenOrCreate, FileAccess.ReadWrite));
 
+            Writer.Write((uint)SettingsVersion.Newest);
             Writer.Write(GameDirectory);
-            Writer.Write(AutoLoad ?? false);
-            Writer.Write(MappingsFile);
+            Writer.Write(AutoLoad);
 
             Writer.Close();
             if (Changed != null)
@@ -46,9 +52,9 @@ namespace TModel
                 CBinaryReader Reader = new CBinaryReader(File.Open(SettingsFile, FileMode.Open, FileAccess.Read));
                 if (Reader.BaseStream.Length != 0)
                 {
+                    SettingsVersion settingsVerison = (SettingsVersion)Reader.ReadUInt32();
                     GameDirectory = Reader.ReadString();
                     AutoLoad = Reader.ReadBoolean();
-                    MappingsFile = Reader.ReadString();
                 }
                 Reader.Close();
             }

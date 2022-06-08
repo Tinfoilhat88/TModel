@@ -77,6 +77,9 @@ namespace CUE4Parse.FN.Exports.FortniteGame
 
         public virtual void DeepDeserialize()
         {
+            ShortDescription = GetOrDefault<FText>(nameof(ShortDescription));
+            Description = GetOrDefault<FText>(nameof(Description));
+#if false
             ItemType = GetOrDefault<EFortItemType>(nameof(ItemType));
             PrimaryAssetIdItemTypeOverride = GetOrDefault<EFortItemType>(nameof(PrimaryAssetIdItemTypeOverride));
             FilterOverride = GetOrDefault<EFortInventoryFilter>(nameof(FilterOverride));
@@ -90,8 +93,6 @@ namespace CUE4Parse.FN.Exports.FortniteGame
             bForceAutoPickup = GetOrDefault<bool>(nameof(bForceAutoPickup));
             bInventorySizeLimited = GetOrDefault<bool>(nameof(bInventorySizeLimited));
             ItemTypeNameOverride = GetOrDefault<FText>(nameof(ItemTypeNameOverride));
-            ShortDescription = GetOrDefault<FText>(nameof(ShortDescription));
-            Description = GetOrDefault<FText>(nameof(Description));
             DisplayNamePrefix = GetOrDefault<FText>(nameof(DisplayNamePrefix));
             SearchTags = GetOrDefault<FText>(nameof(SearchTags));
             GiftBoxGroupName = GetOrDefault<FName>(nameof(GiftBoxGroupName));
@@ -113,6 +114,7 @@ namespace CUE4Parse.FN.Exports.FortniteGame
             FrontendPreviewInitialRotation = GetOrDefault<FRotator>(nameof(FrontendPreviewInitialRotation));
             FrontendPreviewMeshOverride = GetOrDefault<UStaticMesh>(nameof(FrontendPreviewMeshOverride));
             FrontendPreviewSkeletalMeshOverride = GetOrDefault<USkeletalMesh>(nameof(FrontendPreviewSkeletalMeshOverride));
+#endif
         }
 
         public override void Deserialize(FAssetArchive Ar, long validPos)

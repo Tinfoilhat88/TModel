@@ -79,7 +79,7 @@ namespace CUE4Parse.UE4.Assets
                     throw new ParserException($"Could not read {obj.ExportType} correctly", e);
                 }
 
-                Log.Error(e, "Could not read {0} correctly", obj.ExportType);
+                Log.Error(e, "Could not read {0} of type {1} correctly", obj.Name, obj.ExportType);
             }
         }
 

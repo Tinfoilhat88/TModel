@@ -22,7 +22,7 @@ namespace TModel.Modules
         {
             Grid Root = new Grid();
 
-            Root.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(130, GridUnitType.Pixel) });
+            Root.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(100, GridUnitType.Pixel) });
             Root.RowDefinitions.Add(new RowDefinition());
 
             Grid LowerPanel = new Grid();
@@ -97,7 +97,9 @@ namespace TModel.Modules
 #if !DEBUG
                     try
                     {
+                        
 #endif
+                        Log.Information($"\n======== Exporting: {Item.Name} ========\n");
                         GameContentModule.CurrentExporter.GetBlenderExportInfo(Item.Package, SelectedStyles).Save();
 #if !DEBUG
                     }

@@ -20,8 +20,8 @@ namespace CUE4Parse.FN.Exports.FortniteGame
         public override void Deserialize(FAssetArchive Ar, long validPos)
         {
             base.Deserialize(Ar, validPos);
-
             Gender = GetOrDefault<EFortCustomGender>(nameof(Gender));
+#if false
             FixedPortrait = GetOrDefault<FSoftObjectPath>(nameof(FixedPortrait));
             bIsManager = GetOrDefault<bool>(nameof(bIsManager));
             ManagerSynergyTag = GetOrDefault<FGameplayTagContainer>(nameof(ManagerSynergyTag));
@@ -29,6 +29,7 @@ namespace CUE4Parse.FN.Exports.FortniteGame
             FixedSetBonusTag = GetOrDefault<FGameplayTagContainer>(nameof(FixedSetBonusTag));
             MatchingPersonalityBonus = GetOrDefault<int>(nameof(MatchingPersonalityBonus));
             MismatchingPersonalityPenalty = GetOrDefault<int>(nameof(MismatchingPersonalityPenalty));
+#endif
         }
     }
 }

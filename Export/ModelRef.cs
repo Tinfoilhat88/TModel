@@ -27,7 +27,6 @@ namespace TModel.Export
 
         public ModelRef(USkeletalMesh skeletalMesh)
         {
-            Log.Information("Skeletal Mesh: " + skeletalMesh.Name);
             SkeletalMesh = skeletalMesh;
             if (SkeletalMesh.Materials is not null)
             {
@@ -52,7 +51,6 @@ namespace TModel.Export
         // texIndex: The texture index for prop materials
         public ModelRef(UStaticMesh staticMesh, int texIndex = 0)
         {
-            Log.Information("Static Mesh: " + staticMesh.Name);
             StaticMesh = staticMesh;
             if (staticMesh is not null)
             {
@@ -90,10 +88,6 @@ namespace TModel.Export
         // This saves the model as a .psk(x) to the ExportsPath defined in Preferences
         public void SaveMesh(CBinaryWriter writer)
         {
-            if (SkeletalMesh == null)
-                Log.Information("Wring Mesh: " + StaticMesh.Name);
-            else
-                Log.Information("Wring Mesh: " + SkeletalMesh.Name);
 
 
             MeshExporter meshExporter = null;
@@ -155,6 +149,11 @@ namespace TModel.Export
                 writer.Write((Single)Transform.Scale3D.X);
                 writer.Write((Single)Transform.Scale3D.Y);
                 writer.Write((Single)Transform.Scale3D.Z);
+
+                if (SkeletalMesh == null)
+                    Log.Information("Saved StaticMesh: " + StaticMesh.Name);
+                else
+                    Log.Information("Saved SkeletalMesh: " + SkeletalMesh.Name);
             }
             else
             {

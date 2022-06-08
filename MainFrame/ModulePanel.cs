@@ -80,26 +80,26 @@ namespace TModel
             }
         }
 
-        public void AddModule(ModuleContainer moduleContainer)
+        public void AddModule(ModuleContainer moduleContainer, double ratio = 1.0)
         {
             AddSplitter();
             Containers.Add(moduleContainer);
-            AddElement(moduleContainer, false);
+            AddElement(moduleContainer, false, ratio);
         }
 
-        private void AddElement(UIElement widget, bool IsSeperator)
+        private void AddElement(UIElement widget, bool IsSeperator, double ratio = 1.0)
         {
             GridUnitType GridType = IsSeperator ? GridUnitType.Auto : GridUnitType.Star;
             double MinSize = IsSeperator ? 0 : 40;
             if (Direction == Orientation.Horizontal)
             {
                 Grid.SetColumn(widget, ModuleCount);
-                ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridType), MinWidth = MinSize });
+                ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(ratio, GridType), MinWidth = MinSize });
             }
             else
             {
                 Grid.SetRow(widget, ModuleCount);
-                RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridType), MinHeight = MinSize });
+                RowDefinitions.Add(new RowDefinition() { Height = new GridLength(ratio, GridType), MinHeight = MinSize });
             }
             Children.Add(widget);
         }

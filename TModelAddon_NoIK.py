@@ -2020,12 +2020,6 @@ def GetImage(name):
         LoadedImage = bpy.data.images.load(name)
         return LoadedImage
 
-
-IkContraints = []
-
-CircleMesh = None
-CircleCurve = None
-
 def LoadTModelItem(context):
 
     IsSkeleton = True
@@ -2237,88 +2231,11 @@ def LoadTModelItem(context):
 
                 # bpy.ops.object.posemode_toggle()
             if IsCharacter:
-                bpy.ops.curve.primitive_bezier_circle_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
-                CircleCurve = bpy.context.selected_objects[0]
-                CircleCurve.select_set(False)
                 context.view_layer.objects.active = MainSkeleton
-
-
-            def SetupIK(IkTarget, IkBone, poleTargetName, poleAngle):
-                if IkBone is not None and IkTarget is not None:
-                    bpy.ops.object.mode_set(mode="POSE")
-                    MainSkeleton.data.bones.active = IkBone.bone
-                    bpy.ops.object.mode_set(mode="EDIT")
-                    bpy.context.active_bone.tail[0] = IkTarget.bone.head_local[0]
-                    bpy.context.active_bone.tail[1] = IkTarget.bone.head_local[1]
-                    bpy.context.active_bone.tail[2] = IkTarget.bone.head_local[2]
-
-                    bpy.ops.object.mode_set(mode="POSE")
-
-                    bpy.ops.pose.select_all(action='DESELECT')
-
-                    IkTarget.bone.select = True
-                    bpy.ops.object.mode_set(mode="EDIT")
-                    bpy.ops.armature.parent_clear(type='CLEAR')
-
-                    IkConstraint = IkBone.constraints.new(type='IK')
-                    IkConstraint.target = MainSkeleton
-                    IkConstraint.subtarget = IkTarget.name
-                    IkConstraint.chain_count = 2
-                    IkConstraint.pole_angle = 180.0
-                    IkConstraint.pole_target = MainSkeleton
-                    IkConstraint.pole_subtarget = poleTargetName
-                    IkContraints.append(IkConstraint)
-
-                    IkBone.custom_shape = CircleCurve
-                    IkBone.parent.custom_shape = CircleCurve
-
-                    IkBone.lock_location[0] = True
-                    IkBone.lock_location[1] = True
-                    IkBone.lock_location[2] = True
-                    IkBone.lock_rotation[0] = True
-                    IkBone.lock_rotation[1] = True
-                    IkBone.lock_rotation[2] = True
-                    IkBone.lock_scale[0] = True
-                    IkBone.lock_scale[1] = True
-                    IkBone.lock_scale[2] = True
-                    IkBone.bone.layers[1] = True
-                    IkBone.bone.layers[2] = True
 
             if IsCharacter:
 
-                # # Arm Ik
-                # bpy.ops.object.mode_set(mode="EDIT")
-                # EditBones = MainSkeleton.data.edit_bones
-                # LeftArm_TB = EditBones.new("L_Arm_IK")
-                # LeftArm_TB.head = (0.334855, 0.179714, 1.16865)
-                # LeftArm_TB.tail = (0.335759, 0.116441, 1.16933)
-                # SetupIK(GetBone("hand_l"), GetBone("lowerarm_l"), "L_Arm_IK", 160)
-
-                # bpy.ops.object.mode_set(mode="EDIT")
-                # LeftArm_TB = EditBones.new("R_Arm_IK")
-                # LeftArm_TB.head = (-0.289055, 0.179714, 1.16933)
-                # LeftArm_TB.tail = (-0.288151, 0.116441, 1.16933)
-                # SetupIK(GetBone("hand_r"), GetBone("lowerarm_r"), "R_Arm_IK", -160)
-
-                # # Leg IK
-
-                # bpy.ops.object.mode_set(mode="EDIT")
-                # LeftArm_TB = EditBones.new("L_Calf_IK")
-                # LeftArm_TB.head = (0.121137, -0.359408, 0.562778)
-                # LeftArm_TB.tail = (0.122041, -0.422681, 0.563458)
-                # SetupIK(GetBone("foot_l"), GetBone("calf_l"), "L_Calf_IK", 160)
-
-                # bpy.ops.object.mode_set(mode="EDIT")
-                # LeftArm_TB = EditBones.new("R_Calf_IK")
-                # LeftArm_TB.head = (-0.119541, -0.359408, 0.562778)
-                # LeftArm_TB.tail = (-0.118637, -0.422681, 0.563458)
-                # SetupIK(GetBone("foot_r"), GetBone("calf_r"), "R_Calf_IK", -160)
-
                 bpy.ops.object.mode_set(mode="OBJECT")
-                bpy.ops.mesh.primitive_circle_add(radius=1, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
-
-                CircleMesh = bpy.context.selected_objects[0]
-                CircleMesh.select_set(False)
 
                 context.view_layer.objects.active = MainSkeleton
                 bpy.ops.object.mode_set(mode="POSE")
@@ -2416,23 +2333,6 @@ def LoadTModelItem(context):
                         EmissiveImage.image = GetImage(Emissive)
                         CurrentMat.node_tree.links.new(bsdf.inputs['Emission'], EmissiveImage.outputs[0])
 
-                    # if Misc is not None:
-                    #     MetallicImage = CurrentMat.node_tree.nodes.new('ShaderNodeTexImage')
-                    #     MetallicImage.image = GetImage(Misc)
-                    #     MetallicSeperator = CurrentMat.node_tree.nodes.new('ShaderNodeSeparateRGB')
-                    #     MultiplyNode = CurrentMat.node_tree.nodes.new('ShaderNodeMixRGB')
-                    #     MultiplyNode.blend_type = 'MULTIPLY'
-                    #     SecondMultiplyNode = CurrentMat.node_tree.nodes.new('ShaderNodeMixRGB')
-                    #     SecondMultiplyNode.blend_type = 'MULTIPLY'
-                    #     SecondMultiplyNode.inputs[0].default_value = 1.0
-                    #     SecondMultiplyNode.inputs[1].default_value = (SkinBoostColor[0], SkinBoostColor[1], SkinBoostColor[2], 1.0)
-                    #     SecondMultiplyNode.inputs[2].default_value = (SkinBoostColor[3], SkinBoostColor[3], SkinBoostColor[3], SkinBoostColor[3])
-                    #     CurrentMat.node_tree.links.new(MultiplyNode.inputs[1], DiffuseImage.outputs[0])
-                    #     CurrentMat.node_tree.links.new(MultiplyNode.inputs[2], SecondMultiplyNode.outputs[0])
-                    #     CurrentMat.node_tree.links.new(MultiplyNode.inputs[0], MetallicSeperator.outputs["B"])
-                    #     CurrentMat.node_tree.links.new(bsdf.inputs['Base Color'], MultiplyNode.outputs[0])
-                    #     CurrentMat.node_tree.links.new(MetallicSeperator.inputs[0], MetallicImage.outputs["Color"])
-
                 except Exception as e:
                     print(e)
 
@@ -2460,15 +2360,6 @@ class LoadItemOperator(bpy.types.Operator):
 
     def execute(self, context):
         LoadTModelItem(context)
-        if len(IkContraints) > 0:
-            bpy.ops.object.mode_set(mode="POSE")
-            # Updates IK constraints
-            for constraint in IkContraints:
-                constraint.use_tail = False
-                constraint.use_tail = True
-            bpy.ops.object.mode_set(mode="OBJECT")
-            IkContraints.clear()
-
         return {'FINISHED'}
 
 

@@ -38,7 +38,6 @@ namespace TModel.Export.Materials
 
         protected CMaterial(UMaterialInstanceConstant material)
         {
-            Log.Information("       Material: " + material.Name);
             Material = material;
         }
 
@@ -58,7 +57,7 @@ namespace TModel.Export.Materials
 
         public void SaveAndWriteBinary(CBinaryWriter Writer)
         {
-            Log.Information("Writing material: " + Material.Name);
+            Log.Information("Saving material: " + Material.Name);
             if (Material.Parent is UMaterialInstanceConstant parent)
                 LoadParent(parent);
             ReadParameters();
@@ -82,6 +81,15 @@ namespace TModel.Export.Materials
                     if (Successful)
                     {
                         Writer.Write(TexturePath);
+
+                        if (texture.Name is not null)
+                        {
+                            Log.Information($"\tSaved Texture: {texture.Name}");
+                        }
+                    }
+                    else if (texture.Name is not null)
+                    {
+                        Log.Warning($"\tFailed to Save Texture: {texture.Name}");
                     }
                 }
                 else

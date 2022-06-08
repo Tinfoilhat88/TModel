@@ -8,7 +8,7 @@ namespace TModel.Export.Exporters
     // Base class for exporting Fortnite cosmetics, playsets and props.
     public abstract class ExporterBase
     {
-        public bool bHasGameFiles => GameFiles != null && GameFiles.Count > 0;
+        public bool bHasGameFiles;
 
         public List<GameContentItemPreview> GameFiles { set; get; }
 
@@ -20,10 +20,15 @@ namespace TModel.Export.Exporters
 
         public virtual BlenderExportInfo GetBlenderExportInfo(IPackage package, int[]? styles = null)
         {
-            // Should never be called.
-#if DEBUG
-#endif
             return null;
+        }
+
+        public void EnsureInit() 
+        {
+            if (GameFiles is null)
+            {
+                GameFiles = new List<GameContentItemPreview>();
+            }
         }
     }
 }

@@ -2023,9 +2023,6 @@ def GetImage(name):
 
 IkContraints = []
 
-CircleMesh = None
-CircleCurve = None
-
 def LoadTModelItem(context):
 
     IsSkeleton = True
@@ -2237,9 +2234,6 @@ def LoadTModelItem(context):
 
                 # bpy.ops.object.posemode_toggle()
             if IsCharacter:
-                bpy.ops.curve.primitive_bezier_circle_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
-                CircleCurve = bpy.context.selected_objects[0]
-                CircleCurve.select_set(False)
                 context.view_layer.objects.active = MainSkeleton
 
 
@@ -2268,9 +2262,6 @@ def LoadTModelItem(context):
                     IkConstraint.pole_target = MainSkeleton
                     IkConstraint.pole_subtarget = poleTargetName
                     IkContraints.append(IkConstraint)
-
-                    IkBone.custom_shape = CircleCurve
-                    IkBone.parent.custom_shape = CircleCurve
 
                     IkBone.lock_location[0] = True
                     IkBone.lock_location[1] = True
@@ -2315,10 +2306,6 @@ def LoadTModelItem(context):
                 SetupIK(GetBone("foot_r"), GetBone("calf_r"), "R_Calf_IK", -160)
 
                 bpy.ops.object.mode_set(mode="OBJECT")
-                bpy.ops.mesh.primitive_circle_add(radius=1, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
-
-                CircleMesh = bpy.context.selected_objects[0]
-                CircleMesh.select_set(False)
 
                 context.view_layer.objects.active = MainSkeleton
                 bpy.ops.object.mode_set(mode="POSE")

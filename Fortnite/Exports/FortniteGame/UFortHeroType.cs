@@ -36,7 +36,7 @@ namespace CUE4Parse.FN.Exports.FortniteGame
         public override void Deserialize(FAssetArchive Ar, long validPos)
         {
             base.Deserialize(Ar, validPos);
-
+#if false
             bForceShowHeadAccessory = GetOrDefault<bool>(nameof(bForceShowHeadAccessory));
             bForceShowBackpack = GetOrDefault<bool>(nameof(bForceShowBackpack));
             Specializations = GetOrDefault<FSoftObjectPath[]>(nameof(Specializations));
@@ -58,6 +58,7 @@ namespace CUE4Parse.FN.Exports.FortniteGame
             LegacyStatHandle = GetOrDefault<FDataTableRowHandle>(nameof(LegacyStatHandle));
             ItemPreviewMontage_Male = GetOrDefault<FSoftObjectPath>(nameof(ItemPreviewMontage_Male));
             ItemPreviewMontage_Female = GetOrDefault<FSoftObjectPath>(nameof(ItemPreviewMontage_Female));
+#endif
         }
     }
 }

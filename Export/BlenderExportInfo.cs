@@ -70,7 +70,11 @@ namespace TModel.Export
                 }
 
                 Writer.Close();
-                Log.Information("Finished!");
+                Log.Information("\n======== Export Complete ========");
+            }
+            else
+            {
+                Log.Error("\n======== Export Failed ========");
             }
         }
     }

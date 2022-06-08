@@ -125,7 +125,7 @@ namespace CUE4Parse_Conversion.Meshes
 
             foreach (var srcLod in originalMesh.LODModels)
             {
-                if (srcLod.SkipLod) continue;
+                if (srcLod is null || srcLod.SkipLod) continue;
 
                 var numTexCoords = srcLod.NumTexCoords;
                 if (numTexCoords > Constants.MAX_MESH_UV_SETS)

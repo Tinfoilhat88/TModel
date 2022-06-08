@@ -27,8 +27,6 @@ namespace TModel.Modules
     {
         public override string ModuleName => "File Manager";
 
-        StackPanel FilesPanel = new StackPanel();
-
         public static bool HasLoaded;
         public static bool IsLoading;
 
@@ -40,20 +38,15 @@ namespace TModel.Modules
         {
             Grid Root = new Grid();
             Content = Root;
-            Root.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(120) });
-            Root.RowDefinitions.Add(new RowDefinition());
+            Root.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1.0, GridUnitType.Star) });
 
             StackPanel ButtonPanel = new StackPanel() { Orientation = Orientation.Horizontal };
             ButtonPanel.HorizontalAlignment = HorizontalAlignment.Center;
             ButtonPanel.VerticalAlignment = VerticalAlignment.Center;
 
-            CScrollViewer FilePanelScroller = new CScrollViewer();
-            FilePanelScroller.Content = FilesPanel;
             Grid.SetRow(ButtonPanel, 0);
-            Grid.SetRow(FilePanelScroller, 1);
 
             Root.Children.Add(ButtonPanel);
-            Root.Children.Add(FilePanelScroller);
 
             Root.Background = Theme.BackDark;
             CButton LoadButton = new CButton("Load", 40);
@@ -102,7 +95,7 @@ namespace TModel.Modules
             {
                 if (FirstTimeShown)
                 {
-                    if (Preferences.AutoLoad ?? false && App.FileProvider != null)
+                    if (Preferences.AutoLoad && App.FileProvider != null)
                     {
                         Log.Information("Auto loading on startup");
                         LoadGameFiles();
@@ -131,7 +124,7 @@ namespace TModel.Modules
                 }
                 else
                 {
-                    Log.Warning(string.IsNullOrEmpty(Preferences.GameDirectory) ? "Please set the Game Directory in settings" : $"\'{Preferences.GameDirectory}\' is not a valid directory (Change this in settings)");
+                    Log.Warning(string.IsNullOrEmpty(Preferences.GameDirectory) ? "Please set the Game Directory in settings" : $"\'{Preferences.GameDirectory}\' is not a valid directory (Change this in settings then restart)");
                 }
             }
             ).GetAwaiter().OnCompleted(() =>
@@ -151,8 +144,7 @@ namespace TModel.Modules
                             List<IAesVfsReader> AllVFS = new List<IAesVfsReader>();
                             AllVFS.AddRange(App.FileProvider.MountedVfs);
                             AllVFS.AddRange(App.FileProvider._unloadedVfs.Keys);
-                            AllVFS.Sort(new NameSort());
-                            FilesPanel.Children.Clear();
+                            AllVFS.Sort(NameSort.Global);
                             LoadFiles(AllVFS, true);
                             if (FilesLoaded != null)
                                 FilesLoaded();
@@ -232,10 +224,7 @@ namespace TModel.Modules
 
         private void LoadFiles(ICollection<IAesVfsReader> files, bool tryload = false)
         {
-            foreach (var item in files)
-            {
-                FilesPanel.Children.Add(new FileManagerItem(item, tryload));
-            }
+
         }
     }
 
