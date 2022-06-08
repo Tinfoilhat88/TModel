@@ -3,8 +3,9 @@
 __Application for exporting Fortnite models to blender (in less than a second)!__
 
 ## How To Use
-[Tutorial on Youtube](https://www.youtube.com/watch?v=xfOc2HVCya4)
-
+### Youtube Tutorial
+[![](https://img.youtube.com/vi/1abD4EZm1iI/0.jpg)](http://www.youtube.com/watch?v=1abD4EZm1iI "Click to play on Youtube.com")
+### Infographic
 ![](images/HelperInfographic.png)
 
 ## Download
