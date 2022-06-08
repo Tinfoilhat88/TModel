@@ -5,6 +5,8 @@ __Application for exporting Fortnite models to blender (in less than a second)!_
 ## How To Use
 [Tutorial on Youtube](https://www.youtube.com/watch?v=xfOc2HVCya4)
 
+![](images/Infographic.png)
+
 ## Download
 
 [TModel](https://github.com/Tinfoilhat88/TModel/releases/download/temp-impove/TModel.exe)
